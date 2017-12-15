@@ -7,11 +7,15 @@ from util import *
 if __name__ == '__main__':
     print '----------------------------------------------------------------'
 
-    #enroDvecDict = pickle.load(open('../data/far/enro/enro.dvec', 'rb'))
-    #testDvecDict = pickle.load(open('../data/far/test/test.dvec', 'rb'))
+    #enroDvecDict = pickle.load(open('../../data/near/enro_near/enro_near.dvec', 'rb'))
+    #testDvecDict = pickle.load(open('../../data/near/test_near/test_near.dvec', 'rb'))
 
-    enroDvecDict = pickle.load(open('../data/far/enroFar/enroFar.dvec', 'rb'))
-    testDvecDict = pickle.load(open('../data/far/testFar/testFar.dvec', 'rb'))
+    enroDvecDict = pickle.load(open('../../data/far/enro_far_1214/enro_far_1214.dvec', 'rb'))
+    testDvecDict = pickle.load(open('../../data/far/test_far_1214/test_far_1214.dvec', 'rb'))
+
+    #enroDvecDict = pickle.load(open('../../data/far/enro_far_1208/enro_far_1208.dvec', 'rb'))
+    #testDvecDict = pickle.load(open('../../data/far/test_far_1208/test_far_1208.dvec', 'rb'))
+
 
     score = []
     label = []
@@ -19,6 +23,9 @@ if __name__ == '__main__':
     negative = 0
     for enroName in enroDvecDict:
         enroDvector = enroDvecDict[enroName]
+        if len(enroDvector) == 0:
+            print 'enroName: ', enroName
+            continue
         enroDvector = np.asarray(enroDvector).mean(axis=0)
         assert len(enroDvector) == 512
         enroDvector = enroDvector.reshape(1, 512)
@@ -34,11 +41,11 @@ if __name__ == '__main__':
                     raise IOError(testName)
                 #exit(0)
                 #similar = euclidean_distances(enroDvector, testDvector)
-                similar = cosine_distances(enroDvector, testDvector) # 0.93
-                #similar = cosine_similarity(enroDvector, testDvector)
+                #similar = cosine_distances(enroDvector, testDvector) # 0.93
+                similar = cosine_similarity(enroDvector, testDvector)
                 #print 'similar: ', similar.shape, similar[0, 0]
                 #exit(0)
-                score.append(1-similar[0, 0])
+                score.append(similar[0, 0])
                 if enroName == testName:
                     label.append(1)
                     positive += 1

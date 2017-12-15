@@ -24,27 +24,27 @@ def extract_dvector(net, data):
     #exit(0)
     return dvec
 
+
 def process(files, saveFiles):
     check_file(files)
     dataDict = pickle.load(open(files, 'rb'))
     dataDvec = {}
-    for spk in dataDict:
-        dataDvec[spk] = []
-        for uttData in dataDict[spk]:
-            if uttData is None:
-                raise IOError('[{:s}] uttData is None'.format(str(spk)))
-            data = []
-            index = 0
-            frame = 40
-            step = 20
-            while index + frame <= uttData.shape[0]:
-                tmpData = uttData[index:index+frame, :]
-                tmpData = tmpData.reshape((1, tmpData.shape[0], tmpData.shape[1]))
-                data.append(tmpData)
-                index += step
-            data = np.asarray(data)
-            dvec = extract_dvector(net, data)
-            dataDvec[spk].append(dvec)
+    for utt in dataDict:
+        uttData = dataDict[utt]
+        if uttData is None:
+            raise IOError('[{:s}] uttData is None'.format(str(utt)))
+        data = []
+        index = 0
+        frame = 40
+        step = 20
+        while index + frame <= uttData.shape[0]:
+            tmpData = uttData[index:index+frame, :]
+            tmpData = tmpData.reshape((1, tmpData.shape[0], tmpData.shape[1]))
+            data.append(tmpData)
+            index += step
+        data = np.asarray(data)
+        dvec = extract_dvector(net, data)
+        dataDvec[utt] = dvec
     pickle.dump(dataDvec, open(saveFiles, 'wb'), protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -55,9 +55,9 @@ if __name__ == '__main__':
     enroData = '../../data/far/enro_far_1208/enro_far_1208.dict'
     enroDvec = '../../data/far/enro_far_1208/enro_far_1208.dvec'
     testData = '../../data/far/test_far_1208/test_far_1208.dict'
-    testDvec = '../../data/far/test_far_1208/test_far_1208.dvec'    
-
+    testDvec = '../../data/far/test_far_1208/test_far_1208.dvec'
     '''
+    #'''
     enroData = '../../data/far/enro_far_1214/enro_far_1214.dict'
     enroDvec = '../../data/far/enro_far_1214/enro_far_1214.dvec'
     testData = '../../data/far/test_far_1214/test_far_1214.dict'
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     process(enroData, enroDvec)
     process(testData, testDvec)
     #process(trainData, trainDvec)
-    
+
     print '[Done]'
 
 

@@ -124,22 +124,28 @@ def process(basePath, mode='train'):
 
 if __name__ == '__main__':
     print '----------------------------------------------------------------'
+    #trainPath = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train'
+    #savePath = '../../data/far'
+    #process(trainPath, 'train')
 
-    trainPath = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train'
 
-    enroPath = '/aifs1/users/kxd/sre/data/test/xiaoyutongxue/enro'
-    testPath = '/aifs1/users/kxd/sre/data/test/xiaoyutongxue/test'
+    #enroFarPath = '/aifs1/users/kxd/sre/data/test/xytx_1208/enro'
+    #testFarPath = '/aifs1/users/kxd/sre/data/test/xytx_1208/test'
+    #savePath = '../../data/far'
+    #process(enroFarPath, 'enro_far_1208')
+    #process(testFarPath, 'test_far_1208')
 
-    enroFarPath = '/aifs1/users/kxd/sre/data/test/xytx_1208/enro'
-    testFarPath = '/aifs1/users/kxd/sre/data/test/xytx_1208/test'
+    enroFarPath = '/aifs1/users/kxd/sre/data/test/xytx_far_1214/enro'
+    testFarPath = '/aifs1/users/kxd/sre/data/test/xytx_far_1214/test'
+    savePath = '../../data/far'
+    process(enroFarPath, 'enro_far_1214')
+    process(testFarPath, 'test_far_1214')
 
-    savePath = '../data/far'
+    #enroNearPath = '/aifs1/users/kxd/sre/data/test/xiaoyutongxue/enro'
+    #testNearPath = '/aifs1/users/kxd/sre/data/test/xiaoyutongxue/test'
+    #savePath = '../../data/near'
+    #process(enroNearPath, 'enro_near')
+    #process(testNearPath, 'test_near')
 
-    process(trainPath, 'train')
-    process(enroPath, 'enro')
-    process(testPath, 'test')
-
-    process(enroFarPath, 'enroFar')
-    process(testFarPath, 'testFar')
 
 
