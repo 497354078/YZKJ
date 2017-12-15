@@ -1,0 +1,13 @@
+get vadDitc finished
+get fileDict finished
+get fileDict finished
+489.007657051
+F00262 F00262S029
+557.307914019
+drop:  40 minShape:  27 maxShape:  2472 cnt:  1
+vadDict:  268947
+utt2spkDict 263501
+spk2uttDict 8786
+utt2dataDict 263501
+trainData 8786
+validData 8786
