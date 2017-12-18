@@ -72,8 +72,10 @@ if __name__ == '__main__':
     #process(enroFarPath, 'enro_far_1208')
     #process(testFarPath, 'test_far_1208')
 
-    enroFarPath = '/aifs1/users/kxd/sre/data/test/xytx_far_1214/enro'
-    testFarPath = '/aifs1/users/kxd/sre/data/test/xytx_far_1214/test'
+    #enroFarPath = '/aifs1/users/kxd/sre/data/test/xytx_far_1214/enro'
+    #testFarPath = '/aifs1/users/kxd/sre/data/test/xytx_far_1214/test'
+    enroFarPath = '../../data/xytx_far_1214/enro'
+    testFarPath = '../../data/xytx_far_1214/test'
     savePath = '../../data/far'
     process(enroFarPath, 'enro_far_1214')
     process(testFarPath, 'test_far_1214')
