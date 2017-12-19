@@ -126,6 +126,9 @@ def get_data_dict(files):
     check_file(files)
     key2numpy = {}
     flag = True
+    id_ = 0
+    stime = time.time()
+    lines = open(files, 'rb').readlines()
     for key, mat in kaldi_io.read_mat_scp(files):
         key2numpy[key] = mat
         if flag == True:
@@ -134,6 +137,10 @@ def get_data_dict(files):
             print 'mat: ', type(mat), mat.shape
             flag = False
         #print key, mat.shape
+        print '{:d} {:d} {:f}\t\r'.format(id_, lines.__len__(), time.time()-stime),
+        sys.stdout.flush()
+        id_ += 1
+    print ''
     print 'Finished get_data_dict Load\n'
     return key2numpy
 
