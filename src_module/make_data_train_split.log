@@ -1,0 +1,35 @@
+----------------------------------------------------------------
+----------------------------------------------------------------
+get_file_dict from [/aifs1/users/kxd/sre/data/data_aug_fbank/train/spk2utt]
+key:  <type 'str'>
+val:  <type 'str'>
+Finished get_file_dict Load
+
+get_file_dict from [/aifs1/users/kxd/sre/data/data_aug_fbank/train/utt2spk]
+key:  <type 'str'>
+val:  <type 'str'>
+Finished get_file_dict Load
+
+load_vad_dict from [../../data/far-am-log/train/vad.dict]
+
+get_data_from_logfbank splitNum:5 splitID:0
+Finished get_data_from_logfbank Loadd_:310  utstime:1764.3947993
+
+get_data_from_logfbank splitNum:5 splitID:1
+Finished get_data_from_logfbank Loadd_:311  utstime:3510.4644314
+
+get_data_from_logfbank splitNum:5 splitID:2
+Finished get_data_from_logfbank Loadd_:312  utstime:4938.6406214
+
+get_data_from_logfbank splitNum:5 splitID:3
+Finished get_data_from_logfbank Loadd_:313  utstime:4437.3322849
+
+get_data_from_logfbank splitNum:5 splitID:4
+Finished get_data_from_logfbank Loadd_:314  utstime:4225.0672735
+
+spk2utt:  8470
+utt2spk:  1731440
+vadDict:  1731440
+Load time: 19518.309920
+
+

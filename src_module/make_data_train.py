@@ -1,10 +1,8 @@
-import sys
-sys.path.append('../')
-from util import *
+from general import *
 
 def vad_process(data, vad):
     newData = []
-    assert data.shape[0] == len(vad)
+    assert data.shape[0] == len(vad) or data.shape[0]-1 == len(vad) or data.shape[0]-2 == len(vad)
     #print vad
     for i in range(len(vad)):
         if vad[i] == 1:
@@ -42,6 +40,7 @@ def split_data(spk2utt, uttDict, vadDict):
         trainDict[spkID] = []
         validDict[spkID] = []
         split_num = int(len(dataList)*0.8)
+        random.shuffle(dataList)
         for id_ in range(len(dataList)):
             if id_ <= split_num:
                 trainDict[spkID].append(dataList[id_])
@@ -52,7 +51,7 @@ def split_data(spk2utt, uttDict, vadDict):
     print 'get trainDict and validDict finished & spkCnt: {:d}\n'.format(spkID)
     return trainDict, validDict
 
-def process(basePath, mode):
+def process(basePath, feaPath, savePath, mode='train'):
     print '----------------------------------------------------------------'
     check_path(basePath)
     dataPath = os.path.join(savePath, mode)
@@ -67,11 +66,11 @@ def process(basePath, mode):
         print 'load_data_dict from [{:s}]\n'.format(os.path.join(dataPath, 'utt.dict'))
         uttDict = pickle.load(open(os.path.join(dataPath, 'utt.dict'), 'rb'))
     else:
-        uttDict = get_data_dict(os.path.join(basePath, 'feats.scp'))
-        #exit(0)
+        #uttDict = get_data_dict(os.path.join(basePath, 'feats.scp'))
+        uttDict = get_data_from_logfbank(feaPath, os.path.join(basePath, 'feats.scp'))
         pickle.dump(uttDict, open(os.path.join(dataPath, 'utt.dict'), 'wb'),
                     protocol=pickle.HIGHEST_PROTOCOL)
-
+        #pass
     if os.path.isfile(os.path.join(dataPath, 'vad.dict')):
         print 'load_vad_dict from [{:s}]\n'.format(os.path.join(dataPath, 'vad.dict'))
         vadDict = pickle.load(open(os.path.join(dataPath, 'vad.dict'), 'rb'))
@@ -79,8 +78,6 @@ def process(basePath, mode):
         vadDict = get_vad_dict(os.path.join(basePath, 'vad.scp'))
         pickle.dump(vadDict, open(os.path.join(dataPath, 'vad.dict'), 'wb'),
                     protocol=pickle.HIGHEST_PROTOCOL)
-    
-  
 
     print 'spk2utt: ', len(spk2utt)
     print 'utt2spk: ', len(utt2spk)
@@ -94,11 +91,15 @@ def process(basePath, mode):
                     protocol=pickle.HIGHEST_PROTOCOL)
         pickle.dump(validDict, open(os.path.join(dataPath, 'valid.dict'), 'wb'),
                     protocol=pickle.HIGHEST_PROTOCOL)
+    print '[Done]'
 
 if __name__ == '__main__':
     print '----------------------------------------------------------------'
-    #trainPath = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train'
-    trainPath = '/aifs1/users/kxd/sre/data/data_aug_fbank/train'
-    savePath = '../../data/far-am'
-    process(trainPath, 'train')
+    #trainPath = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train' # xiaoyutongxue aug
+    trainPath = '/aifs1/users/kxd/sre/data/data_aug_fbank/train'  # accent & mandarin aug
+    feaPath = '../../logfbank'
+    #enroFarPath = '/aifs1/users/kx
+    savePath = '../../data/far-am-log'
+    process(trainPath, feaPath, savePath, 'train')
+
 

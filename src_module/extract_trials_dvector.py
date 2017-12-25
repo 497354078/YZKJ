@@ -1,8 +1,9 @@
-import sys
-sys.path.append('../')
-from util import *
+from general import *
+from model_resnet18 import resnet18
+from model_resnet34 import resnet34
+from model_resnet50 import resnet50
 
-def extract_dvector(net, data):
+def feed_network(net, data):
     net.eval()
 
     #print data.shape
@@ -19,17 +20,15 @@ def extract_dvector(net, data):
 
     dvec = dvec.data.cpu().numpy()
     dvec = dvec.mean(axis=0)
-    assert len(dvec) == 512
+
     #print time.time()-etime
     #exit(0)
     return dvec
 
-def process(files, saveFiles):
+def extract_dvector(net, files, save_files):
+    rePrint('  [extract_dvector...]')
     check_file(files)
     dataDict = pickle.load(open(files, 'rb'))
-    mean = pickle.load(open('../../data/far/train/train.mean', 'rb'))
-    std = pickle.load(open('../../data/far/train/train.std', 'rb'))
-    eps = 1e-8
 
     dataDvec = {}
     for utt in dataDict:
@@ -46,11 +45,12 @@ def process(files, saveFiles):
             data.append(tmpData)
             index += step
         data = np.asarray(data)
-        #data = (data-mean)/(std+eps)
-        dvec = extract_dvector(net, data)
+        dvec = feed_network(net, data)
+        assert len(dvec) == 512
         dataDvec[utt] = dvec
-    pickle.dump(dataDvec, open(saveFiles, 'wb'), protocol=pickle.HIGHEST_PROTOCOL)
-
+    pickle.dump(dataDvec, open(save_files, 'wb'), protocol=pickle.HIGHEST_PROTOCOL)
+    rePrint('  [dvector save in {:s}]'.format(save_files))
+    rePrint('')
 
 
 if __name__ == '__main__':
@@ -73,17 +73,17 @@ if __name__ == '__main__':
     testData = '../../data/near/test_near/test_near.dict'
     testDvec = '../../data/near/test_near/test_near.dvec'
     '''
-    print 'Load model'
-    #net = torch.load('../../model/far/resnet18-/resnet18.14.model')
-    net = torch.load('../../model/far/resnet50-normal-resnet50-normal-2017-12-19 14:45:26/resnet50.49.model')
-    print net
-    #net = torch.load('../../model/far/resnet18-2017-12-14 18:07:47/resnet.37.model')
+    #trainData = '../data/far/train/train.dict'
+    #trainDvec = '../data/far/train/train.dvec'
+
+    net = resnet34(num_classes=8470)
+    net.load_state_dict(torch.load('../../model/resnet34far-am-kaldi/epoch.47.model'))
+    print type(net)
+    #print net
     net.cuda()
 
-    process(enroData, enroDvec)
-    process(testData, testDvec)
+    extract_dvector(net, enroData, enroDvec)
+    extract_dvector(net, testData, testDvec)
 
     print '[Done]'
-
-
 

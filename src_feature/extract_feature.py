@@ -30,7 +30,8 @@ def extract_feature(files, path):
 
 if __name__ == '__main__':
     #files = '/aifs1/users/kxd/sre/data/test/xytx_far_1214_volumeup/test/wav.scp'
-    files = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train/wav.scp'
+    #files = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train/wav.scp'
+    files = '/aifs1/users/kxd/sre/data/data_aug_fbank/train/wav.scp'
     path = '../../logfbank'
     make_path(path)
 

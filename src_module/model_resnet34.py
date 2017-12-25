@@ -1,8 +1,4 @@
-import torch.nn as nn
-import math
-import copy
-import torch.utils.model_zoo as model_zoo
-
+from general import *
 
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
            'resnet152']
@@ -109,7 +105,7 @@ class ResNet(nn.Module):
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(2, stride=1)
-        self.fc0 = nn.Linear(512 * block.expansion, 512)
+        #self.fc0 = nn.Linear(512 * block.expansion, 512)
         self.fc = nn.Linear(512, num_classes)
 
         self.flag = True
@@ -140,42 +136,42 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        if self.flag:print '\n================================================================='
-        if self.flag:print '    [ ResNet Model ]'
-        if self.flag:print '=================================================================\n'
-        if self.flag:print 'input x: ', x.size()
+        if self.flag:rePrint('\n=================================================================')
+        if self.flag:rePrint('    [ ResNet 34 Model ]')
+        if self.flag:rePrint('=================================================================\n')
+        if self.flag:rePrint('input x: ', x.size())
 
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        if self.flag:print 'conv1 x: ', x.size()
+        if self.flag:rePrint('conv1 x: ', x.size())
 
         x = self.maxpool(x)
-        if self.flag:print 'maxpl x: ', x.size()
+        if self.flag:rePrint('maxpl x: ', x.size())
 
         x = self.layer1(x)
-        if self.flag:print 'layer1 x: ', x.size()
+        if self.flag:rePrint('layer1 x: ', x.size())
         x = self.layer2(x)
-        if self.flag:print 'layer2 x: ', x.size()
+        if self.flag:rePrint('layer2 x: ', x.size())
         x = self.layer3(x)
-        if self.flag:print 'layer3 x: ', x.size()
+        if self.flag:rePrint('layer3 x: ', x.size())
         x = self.layer4(x)
-        if self.flag:print 'layer4 x: ', x.size()
+        if self.flag:rePrint('layer4 x: ', x.size())
 
         x = self.avgpool(x)
-        if self.flag:print 'avgpl x: ', x.size()
+        if self.flag:rePrint('avgpl x: ', x.size())
 
         x = x.view(x.size(0), -1)
-        x = self.fc0(x)
+        #x = self.fc0(x)
         y = copy.copy(x)
-        if self.flag:print 'xview x: ', x.size()
-        if self.flag:print 'yview y: ', y.size()
+        if self.flag:rePrint('xview x: ', x.size())
+        if self.flag:rePrint('yview y: ', y.size())
 
         x = self.fc(x)
-        if self.flag:print 'fc x: ', x.size()
+        if self.flag:rePrint('fc x: ', x.size())
 
-        if self.flag:print 'return y(feature), x(predict)'
-        if self.flag:print '\n=================================================================\n'
+        if self.flag:rePrint('return y(feature), x(predict)')
+        if self.flag:rePrint('\n=================================================================\n')
         self.flag = False
         return y, x
 
@@ -233,4 +229,5 @@ def resnet152(pretrained=False, **kwargs):
     if pretrained:
         model.load_state_dict(model_zoo.load_url(model_urls['resnet152']))
     return model
+
 
