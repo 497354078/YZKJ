@@ -1,20 +1,7 @@
+import sys
+sys.path.append('../')
 from general import *
 
-def vad_process(data, vad):
-    newData = []
-    assert data.shape[0] == len(vad) or data.shape[0]-1 == len(vad) or data.shape[0]-2 == len(vad)
-    #print vad
-    for i in range(len(vad)):
-        if vad[i] == 1:
-            newData.append(data[i, :])
-
-    if len(newData) < 80:
-        return None
-
-    newData = np.asarray(newData, dtype=np.float32)
-    newData = (newData-newData.mean()) / (newData.std()+eps)
-    assert newData.shape[1] == data.shape[1]
-    return newData
 
 def get_data_from_logfbank_split(feaPath, spk2utt, vadDict, splitNum, splitID):
     check_path(feaPath)
@@ -26,9 +13,10 @@ def get_data_from_logfbank_split(feaPath, spk2utt, vadDict, splitNum, splitID):
         for id_, uttName in enumerate(spk2utt[spkName]):
             if id_ % splitNum != splitID:
                 continue
+            #if uttName.find('noise') != -1 or uttName.find('reverb') != -1:
+            #    continue
             feaData = pickle.load(open(os.path.join(feaPath, uttName+'.pkl'), 'rb'))
             feaData = feaData.astype(np.float32)
-            feaData = vad_process(feaData, vadDict[uttName])
             dataDict[spkID].append((uttName, feaData))
             print 'splitNum:{:d}  splitID:{:d}  spkID:{:4d}  id_:{:3d}  utstime:{:f}\t\r'.format(
                 splitNum, splitID, spkID, id_, time.time()-stime),
@@ -71,10 +59,12 @@ def process(basePath, feaPath, savePath, mode='train', splitNum=5):
 if __name__ == '__main__':
     print '----------------------------------------------------------------'
     #trainPath = '/aifs1/users/kxd/sre/data/xytx_aug_fbank/train' # xiaoyutongxue 43w
-    trainPath = '/aifs1/users/kxd/sre/data/data_aug_fbank/train' # accent & mandarin 173w
+    #trainPath = '/aifs1/users/kxd/sre/data/data_aug_fbank/train' # accent & mandarin 173w
+    trainPath = '../../data/mandarin'
     feaPath = '../../logfbank'
-    savePath = '../../data/far-am-speech-float'
+    savePath = '../../data/far-mandarin-speech-novad'
     splitNum = 5
     process(trainPath, feaPath, savePath, 'train', splitNum)
+
 
 
