@@ -50,7 +50,7 @@ class LoadModelDataVAD(Dataset):
 
 if __name__ == '__main__':
     print '----------------------------------------------------------------'
-    featType = 'far-accent-speech-novad' # speech & kaldi
+    featType = 'far-mandarin-speech-novad' # speech & kaldi
     splitNum = 5
     splitID = 0
     alpha = 0.5
@@ -66,10 +66,6 @@ if __name__ == '__main__':
         print 'data: ', type(data), data.size()
         print 'labs: ', type(labs), labs.size()
         break
-    import gc
-    del trainData
-    del trainLoad
-    gc.collect()
 
     validData = LoadModelDataVAD(validFile, vadDict, alpha, 'valid')
     validLoad = torch.utils.data.DataLoader(validData, batch_size=512, shuffle=True, num_workers=4)

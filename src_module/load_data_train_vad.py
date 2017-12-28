@@ -14,13 +14,13 @@ class LoadModelDataVAD(Dataset):
         return self.data[item], self.labs[item]
 
     def load_data(self, files, vadDict, alpha, mode):
-        #rePrint('----------------------------------------------------------------')
-        #rePrint('  Load Dataset from [{:s}] & mode:{:s}'.format(files, mode))
+        rePrint('----------------------------------------------------------------')
+        rePrint('  Load Dataset from [{:s}] & mode:{:s}'.format(files, mode))
         stime = time.time()
         check_file(files)
         dataDict = pickle.load(open(files, 'rb'))
-        #rePrint('  Load Dataset [usetime: {:f}] & [length: {:d}] & slip-window-sample...'.format(
-        #         time.time()-stime, len(dataDict)))
+        rePrint('  Load Dataset [usetime: {:f}] & [length: {:d}] & slip-window-sample...'.format(
+                 time.time()-stime, len(dataDict)))
         stime = time.time()
         data = []
         labs = []
@@ -41,16 +41,16 @@ class LoadModelDataVAD(Dataset):
                         data.append(tmpData)
                         labs.append(spkID)
                     index += step
-        #rePrint('  Slip-window-sample usetime: {:f}'.format(time.time()-stime))
-        #rePrint('  [data: {:d}  shape: {:s}]'.format(len(data), data[0].shape))
-        #rePrint('  [labs: {:d}  minVal:{:d}  maxVal:{:d}'.format(len(labs), min(labs), max(labs)))
-        #rePrint('')
+        rePrint('  Slip-window-sample usetime: {:f}'.format(time.time()-stime))
+        rePrint('  [data: {:d}  shape: {:s}]'.format(len(data), data[0].shape))
+        rePrint('  [labs: {:d}  minVal:{:d}  maxVal:{:d}'.format(len(labs), min(labs), max(labs)))
+        rePrint('')
         return data, labs
 
 
 if __name__ == '__main__':
     print '----------------------------------------------------------------'
-    featType = 'far-accent-speech-novad' # speech & kaldi
+    featType = 'far-am-speech-novad' # speech & kaldi
     splitNum = 5
     splitID = 0
     alpha = 0.5
@@ -66,10 +66,6 @@ if __name__ == '__main__':
         print 'data: ', type(data), data.size()
         print 'labs: ', type(labs), labs.size()
         break
-    import gc
-    del trainData
-    del trainLoad
-    gc.collect()
 
     validData = LoadModelDataVAD(validFile, vadDict, alpha, 'valid')
     validLoad = torch.utils.data.DataLoader(validData, batch_size=512, shuffle=True, num_workers=4)

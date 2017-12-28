@@ -24,7 +24,7 @@ def train_model(net=None,
 
         if (id_ + 1) % log_interval == 0:
             printStr = "Train [%d|%d] lr: %f Loss: %.4f Acc: %.4f UseTime: %f" % (
-                epoch + 1, (id_ + 1)*batch_size, lr, loss.data[0],
+                epoch, (id_ + 1)*batch_size, lr, loss.data[0],
                 1.0*acc/labs.data.size(0), time.time()-stime)
             rePrint(printStr)
 
