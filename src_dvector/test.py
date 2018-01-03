@@ -3,6 +3,9 @@ sys.path.append('../')
 sys.path.append('../src_module/')
 from general import *
 from model_resnet34 import resnet34
+from model_resnet35 import resnet35
+from model_resnet18 import resnet18
+from model_resnet19 import resnet19
 
 from make_data_trials import process as make_data_trials
 #from make_data_kaldi import process as make_data_kaldi
@@ -53,9 +56,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PyTorch For Far Voice Verification')
 
     # data setting
-    feaType = 'near-am-speech'
-    #enroType = 'xytx_far_1214_volumeup'
-    enroType = 'xiaoyutongxue'
+    feaType = 'far-accent-speech-novad'
+    enroType = 'xytx_far_1214_volumeup'
+    #enroType = 'xiaoyutongxue'
     parser.add_argument('--use_vad',    default=False, action='store_true', help='vad to use, default 0.5vad')
     parser.add_argument('--use_feat',   type=str, default='speech',  help='feat to use')
     parser.add_argument('--fea_type',   type=str, default=feaType,help='data to use')

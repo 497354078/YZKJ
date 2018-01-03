@@ -2,7 +2,11 @@ import sys
 sys.path.append('../')
 sys.path.append('../src_module/')
 from general import *
+from model_fcnlstm import DeConv as fcnlstm
+from model_resnet18 import resnet18
+from model_resnet19 import resnet19
 from model_resnet34 import resnet34
+from model_resnet35 import resnet35
 from train_model import train_model
 from valid_model import valid_model
 from load_data_train_vad_accent import LoadModelDataVAD
@@ -79,7 +83,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PyTorch For Far Voice Verification')
 
     # data setting
-    feaType = 'far-accent-speech-novad'
+    feaType = 'near-accent-speech-novad'
     parser.add_argument('--split_num',  type=int, default=5,     help='number of split')
     parser.add_argument('--fea_type',   type=str, default=feaType,help='data to use')
     parser.add_argument('--train_path', type=str, default='/home/lj/work/voice/data/{:s}/train'.format(feaType),
